@@ -1,95 +1,90 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+
+import Link from "next/link";
+import { Card, Col, Row, Popover, Image } from "antd";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+//import styles from "./page.module.css";
+
+
 
 export default function Home() {
+const text_cadastro = <span>Cadastrando fornecedores</span>;
+
+const content_cadastro = (
+  <div>
+    <p>Gif</p>
+    <Image height='150px' src='https://media1.tenor.com/m/YAClYZzwPn8AAAAC/hello-hi.gif'  alt="Gatinho tocando a tela" className="img-responsive"/>
+  </div>
+);
+
+const text_visualizando = <span>Visualizando os fornecedores</span>;
+
+const content_visualizando = (
+  <div>
+    <p>Gif</p>
+    <Image src="https://media1.tenor.com/m/dG5tuneH22YAAAAC/cat-ears-cat-eyes.gif"  alt="Gatinho amarelo semi escondido dilatando as pupilas de maneira travessa" className="img-responsive"/>
+  </div>
+);
+
+const text_editar = <span>Edição das informações</span>;
+
+const content_editar = (
+  <div>
+    <p>Gif</p>
+    <Image src="https://media1.tenor.com/m/8QsOaiMKvWQAAAAd/cat-crunch.gif"  alt="Gatinho branco comendo algo muito duro" className="img-responsive"/>
+  </div>
+);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    
+    <div>
+      <header>
+        <h1 style={{textAlign: 'center', margin: '50px'}}>Dashboard de fornecedores</h1>
+      </header>  
+      {
+        //<Navbar/>
+        }
+      {
+        /*Hello World
+        <ul>
+          <li>
+            <Link href='/cadastro'>Cadastro</Link>
+          </li>
+          <li>
+            <Link href='/visualizar'>Visualizar</Link>
+          </li>
+          <li>
+            <Link href='/editar'>Editar</Link>
+          </li>
+        </ul>*/
+      }
+      <div style={{margin: '50px'}}>
+      <Row gutter={16}>
+        <Col  xs={24} sm={12} md={8} lg={8} xl={8}>
+          <Card style={{textAlign: 'center'}} title="Cadastrar" bordered={true}>
+          <Popover placement="bottom" title={text_cadastro} content={content_cadastro} overlayStyle={{ maxWidth: '300px' }}>
+            Cadastre <Link href='/cadastro'>aqui</Link> novos fornecedores.
+          </Popover>
+          </Card>
+        </Col>
+        <Col  xs={24} sm={12} md={8} lg={8} xl={8}>
+          <Card style={{textAlign: 'center'}} title="Visualizar" bordered={true}>
+            <Popover placement="bottom" title={text_visualizando} content={content_visualizando}>
+              Visualize <Link  href='/visualizar'>aqui</Link> a lista de fornecedores cadastrados.
+            </Popover>
+          </Card>
+        </Col>
+        <Col  xs={24} sm={12} md={8} lg={8} xl={8}>
+          <Card style={{textAlign: 'center'}} title="Editar" bordered={true}>
+            <Popover placement="bottom" title={text_editar} content={content_editar} overlayStyle={{ maxWidth: '300px' }}>
+              Clique <Link  href='/editar'>aqui</Link> para editar informações ou excluir fornecedores.
+            </Popover>
+          </Card>
+        </Col>
+      </Row>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+      <Footer/>
+    </div>
+    
   );
 }
