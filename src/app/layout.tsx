@@ -1,8 +1,17 @@
 import { ReduxProvider } from "@/redux/provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
+//import { Header } from 'cegov-antd'
+import { Typography, Divider, Switch } from "antd";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+const { Title, Paragraph } = Typography;
+
 //import { Providers } from "./GlobalRedux/provider";
-//import "./globals.css";
+import "./globals.css";
+
+//import { useAppAccessibility } from './context/accessibilityContext'
+import { useAppAccessibility } from "@/context/acessibilityContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +25,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { lengthText } = useAppAccessibility()
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ReduxProvider>
+      <body className={inter.className} >
+      
+        <ReduxProvider lengthText={lengthText}>
           {children}
         </ReduxProvider>
       </body>

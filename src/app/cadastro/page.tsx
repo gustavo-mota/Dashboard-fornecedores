@@ -102,7 +102,7 @@ useEffect(()=>{
     <Card 
       style={{ width: "50vw", padding: 30, margin: 'auto' , placeItems: 'center'}}
     >
-      <h1 style={{ textAlign: 'center' }}>{args.titulo ? args.titulo : 'Cadastro de fornecedores'}</h1>
+      <h1 style={{ textAlign: 'center', fontSize: 24, fontStyle: 'bold' }}>{args.titulo ? args.titulo : 'Cadastro de fornecedores'}</h1>
     <Form
       form={form}
       labelCol={{ span: 8 }}
