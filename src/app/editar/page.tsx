@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // src\app\GlobalRedux\Features\actions.js
 //import './index.css';
 import { PlusOutlined } from '@ant-design/icons';
-import { Table, Empty, Button, ConfigProvider } from 'antd';
+import { Table, Empty, Button, ConfigProvider, DatePicker } from 'antd';
 
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
@@ -18,6 +18,11 @@ import {table_columns} from './table_definitions_edit.js'
 import Link from 'next/link';
 import BackButton from '@/app/backbutton';
 import ModalEditor from '@/components/modalEditor';
+import moment from 'moment'; 
+
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
 
 const customizeRenderEmpty = () => (
   // sempre que não há dados, essa tela é mostrada
@@ -52,13 +57,36 @@ export default function Editar() {
 
 
     const handleClickDelete = (arg: any)=>{
-      console.log('printa edit: ', arg)
       dispatch(dellfornecedor(arg.processo))
+    }
+
+    const dateRefatora = (arg: any)=>{
+      //console.log("dados refatora: ", moment(arg.periodo), 'arg.periodo', arg.periodo) 
+      //console.log("dados refatora datepicker: ", DateTime.fromISO(arg.periodo), 'jsdate', DateTime.fromISO(arg.periodo).toJSDate()) 
+      //console.log('iso: ', DateTime.fromISO('2024-05-25'))
+      
+      if(arg.periodo != undefined){
+        if(arg.periodo.length != 2){
+          return {...arg, periodo: dayjs(arg.periodo)}
+        }else{
+          return {
+            ...arg,
+            periodo: [
+              dayjs(arg.periodo[0]),
+              dayjs(arg.periodo[1])
+            ]
+          }
+        }
+        
+      }else{
+        return arg
+      }
     }
 
     const handleClickEdit = (arg: any)=>{
       console.log('printa edit: ', arg)
-      setDadosEditar(arg)
+      const dadosEditar_refatorados = dateRefatora(arg)
+      setDadosEditar(dadosEditar_refatorados)
       setEdit(true)
     }
 
@@ -72,16 +100,22 @@ export default function Editar() {
       <div>
         <h1 style={{ textAlign: 'center' }}>Visualizar, editar ou excluir fornecedores salvos</h1>
         <ConfigProvider renderEmpty={noData ? customizeRenderEmpty : undefined}>
-          <Table dataSource={[...fornecedores]} columns={[...table_columns, {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-            <>
-                <Button onClick={() => handleClickEdit(record)} shape='circle' icon={<EditOutlined />} style={{color: '#50FA6E'}} />
-                <Button onClick={() => handleClickDelete(record)} shape="circle" icon={<DeleteOutlined />} style={{color: '#FA5A50'}}/>
-            </>
-        ),
-    },]} />
+          <Table 
+            dataSource={[...fornecedores]} 
+            columns={[...table_columns, {
+              title: 'Action',
+              key: 'action',
+              render: (text, record) => (
+                  <>
+                      <Button onClick={() => handleClickEdit(record)} shape='circle' icon={<EditOutlined />} style={{color: '#50FA6E'}} />
+                      <Button onClick={() => handleClickDelete(record)} shape="circle" icon={<DeleteOutlined />} style={{color: '#FA5A50'}}/>
+                  </>
+              ),
+            },]} 
+            expandable={{
+              expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.descricao}</p>,
+            }} 
+            />
         </ConfigProvider>
         <ModalEditor editando={edit} onChildClick={handleChildrenClick} dados={dadosEditar}/>
         <Link href='/'>

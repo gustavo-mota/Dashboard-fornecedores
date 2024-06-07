@@ -11,6 +11,11 @@ import { reset, setProcesso, addFornecedor, editFornecedor } from '@/redux/featu
 
 import BackButton from '@/app/backbutton';
 
+import dayjs from 'dayjs';
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
+
 import {
   Button, Cascader, Checkbox, Card,
   DatePicker, Form, Input, InputNumber,
@@ -18,6 +23,8 @@ import {
   Upload, notification
 } from 'antd';
 import type { NotificationArgsProps } from 'antd';
+
+import moment from 'moment';
 
 import Link from 'next/link';
 import { AppDispatch, useAppSelector } from '@/redux/store';
@@ -36,8 +43,9 @@ const [form] = Form.useForm();
 
 useEffect(()=>{
   form.resetFields(); // necessário para mostrar os initValues
-  //console.log('initial values: ', args.initialValues)
+  console.log('initial values: ', args.initialValues)
   setInitValue({...args.initialValues})
+  setDateDisable(args.initialValues.fim_indefinido)
   //console.log("new init: ", initValue)
 }, [args.initialValues])
 
@@ -58,8 +66,29 @@ const openNotification = () => {
   });
 };
 
+const corrigeDatas = (values: any)=>{
+  console.log(values.periodo, ' hloigoçigçogoççg')
+  if(values.periodo != undefined){
+    if(values.periodo.length == 2){
+      // duas datas
+      const new_periodo = values.periodo.map((M)=>{return M.format('YYYY-MM-DD')})
+      console.log('periodo dupla data refatorado: ', new_periodo)
+      return {...values, periodo: new_periodo}
+    }else{
+      // tem apenas 1 data
+      const M = values.periodo
+      const new_periodo_ = M.format('YYYY-MM-DD') //values.periodo.toString()
+      console.log('AQQQQQQQQQQQQQQQQQQQQ', new_periodo_)
+      return {...values, periodo: new_periodo_}
+    }
+  }else{
+    return values
+  }
+}
+
 const onFinish = (values: any) => {
-  //console.log('Received values of form: ', values);
+  console.log('Received values of form: ', values, values.periodo);
+  var values_corrected = corrigeDatas(values)
   //console.log('processo: ', values.processo)
   dispatch(setProcesso(values.processo));
   if(args.editMode){
@@ -68,22 +97,15 @@ const onFinish = (values: any) => {
     console.log('index: ', index)
     if(index!=-1){
     var newfornecedores = [...fornecedoresReduxVar];
-    newfornecedores[index] = values;
+    newfornecedores[index] = values_corrected;
     console.log('newfornecedores: ', newfornecedores)
     dispatch(editFornecedor([...newfornecedores]));
     args.submitFunctionModal()
     }
   }else{
-    dispatch(addFornecedor(values))
+    dispatch(addFornecedor(values_corrected))
     setNotifica(true)
   }
-};
-
-
-
-const handleClick = () => {
-  console.log('submit clicado')
-  //dispatch(setProcesso('Novos dados'));
 };
 
 //const pross = useSelector(state=>state.processo)
@@ -113,34 +135,36 @@ useEffect(()=>{
       initialValues={args.initialValues ? args.initialValues : undefined}
     >
       <Form.Item label="Número do processo" name='processo' rules={[{ required: true, message: 'Esse campo não pode ficar vazio!' }]}>
-        <Input allowClear showCount maxLength={25}/>
+        <Input allowClear showCount maxLength={25} placeholder='Insira aqui o processo'/>
       </Form.Item>
       <Form.Item label="Nome do fornecedor" name='fornecedor' rules={[{ required: true, message: 'Esse campo não pode ficar vazio!' }]}>
-        <Input allowClear />
+        <Input allowClear placeholder='Insira aqui o nome' />
       </Form.Item>
-      <Form.Item label="CNPJ" name='cnpj' rules={[{ required: true, message: 'Esse campo não pode ficar vazio!' }]}>
-        <Input allowClear />
+      <Form.Item label="CNPJ" name='cnpj'  rules={[{ required: true, message: 'Esse campo não pode ficar vazio!' }]} >
+        <Input allowClear placeholder="99.999.999/9999-99" />
       </Form.Item>      
       <Form.Item label="Cidade" name='uf_cidade' >
         <Cascader
           options={[
             ...estados_cidades
           ]}
+          placeholder='Escolha a UF e a cidade'
         />
       </Form.Item>
       
       {dateDisable ? (
         <Form.Item label="Início de contrato" name='periodo'>
-          <DatePicker />
+          <DatePicker placeholder='Início' />
         </Form.Item>
       ) : (
         <Form.Item label="Início e fim do contrato: " name='periodo'>
-          <RangePicker />
+          <RangePicker placeholder={['Início', 'Fim']} format="YYYY-MM-DD"/>
         </Form.Item>
       )}
       
-      <Form.Item label="Sem data de fim definido" name="fim_indefinido" valuePropName="checked">
+      <Form.Item label="Sem data de fim definido" name="fim_indefinido" valuePropName="checked" >
         <Checkbox 
+        defaultChecked={dateDisable}
         checked={dateDisable}
         onChange={(e) => setDateDisable(e.target.checked)}
         >
@@ -151,12 +175,12 @@ useEffect(()=>{
       </Form.Item>
 
       <Form.Item label="Descrição do produto" name='descricao'>
-        <TextArea rows={4} maxLength={500} showCount/>
+        <TextArea rows={4} maxLength={500} showCount placeholder='Descreve em até 500 caracteres o produto'/>
       </Form.Item>
       {
         args.saveDeactivate ? '' :
       <Form.Item style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Button type="primary" htmlType="submit" onClick={handleClick}> {args.addButtonTitle ? args.addButtonTitle : 'Adicionar'}</Button>
+        <Button type="primary" htmlType="submit"> {args.addButtonTitle ? args.addButtonTitle : 'Adicionar'}</Button>
       </Form.Item>
       }
       <Form.Item style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

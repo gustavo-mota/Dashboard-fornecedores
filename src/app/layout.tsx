@@ -25,12 +25,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { lengthText } = useAppAccessibility()
+  //const { lengthText } = useAppAccessibility()
   return (
     <html lang="en">
       <body className={inter.className} >
       
-        <ReduxProvider lengthText={lengthText}>
+        <ReduxProvider >
           {children}
         </ReduxProvider>
       </body>

@@ -44,7 +44,13 @@ export default function Visualizar() {
       <div>
         <h1 style={{ textAlign: 'center' }}>Fornecedores cadastrados no sistema</h1>
         <ConfigProvider renderEmpty={noData ? customizeRenderEmpty : undefined}>
-          <Table dataSource={[...fornecedores]} columns={table_columns} />
+          <Table 
+            dataSource={[...fornecedores]} 
+            columns={table_columns} 
+            expandable={{
+            expandedRowRender: (record) => <p style={{ margin: 0 }}>{record.descricao}</p>,
+              }} 
+            />
         </ConfigProvider>
         <Link href='/'>
           <Button type="primary" danger >Tela inicial</Button>

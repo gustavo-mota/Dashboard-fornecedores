@@ -83,7 +83,9 @@ const content_editar = (
         </Col>
       </Row>
       </div>
-      <Footer/>
+      {
+        //<Footer/>
+      }
     </div>
     
   );
