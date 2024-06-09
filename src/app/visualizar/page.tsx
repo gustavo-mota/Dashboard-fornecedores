@@ -39,7 +39,6 @@ export default function Visualizar() {
       }
     }, [fornecedores])
 
-    console.log('fornecedores fetched: ', fornecedores)
     return (
       <div>
         <h1 style={{ textAlign: 'center' }}>Fornecedores cadastrados no sistema</h1>

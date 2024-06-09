@@ -44,41 +44,27 @@ const content_editar = (
       {
         //<Navbar/>
         }
-      {
-        /*Hello World
-        <ul>
-          <li>
-            <Link href='/cadastro'>Cadastro</Link>
-          </li>
-          <li>
-            <Link href='/visualizar'>Visualizar</Link>
-          </li>
-          <li>
-            <Link href='/editar'>Editar</Link>
-          </li>
-        </ul>*/
-      }
       <div style={{margin: '50px'}}>
       <Row gutter={16}>
         <Col  xs={24} sm={12} md={8} lg={8} xl={8}>
           <Card style={{textAlign: 'center'}} title="Cadastrar" bordered={true}>
-          <Popover placement="bottom" title={text_cadastro} content={content_cadastro} overlayStyle={{ maxWidth: '300px' }}>
+          
             Cadastre <Link href='/cadastro'>aqui</Link> novos fornecedores.
-          </Popover>
+          
           </Card>
         </Col>
         <Col  xs={24} sm={12} md={8} lg={8} xl={8}>
           <Card style={{textAlign: 'center'}} title="Visualizar" bordered={true}>
-            <Popover placement="bottom" title={text_visualizando} content={content_visualizando}>
+            
               Visualize <Link  href='/visualizar'>aqui</Link> a lista de fornecedores cadastrados.
-            </Popover>
+            
           </Card>
         </Col>
         <Col  xs={24} sm={12} md={8} lg={8} xl={8}>
           <Card style={{textAlign: 'center'}} title="Editar" bordered={true}>
-            <Popover placement="bottom" title={text_editar} content={content_editar} overlayStyle={{ maxWidth: '300px' }}>
+            
               Clique <Link  href='/editar'>aqui</Link> para editar informações ou excluir fornecedores.
-            </Popover>
+            
           </Card>
         </Col>
       </Row>

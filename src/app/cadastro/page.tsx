@@ -43,10 +43,11 @@ const [form] = Form.useForm();
 
 useEffect(()=>{
   form.resetFields(); // necessário para mostrar os initValues
-  console.log('initial values: ', args.initialValues)
   setInitValue({...args.initialValues})
-  setDateDisable(args.initialValues.fim_indefinido)
-  //console.log("new init: ", initValue)
+  if(args.initialValues != undefined){
+    setDateDisable(args.initialValues.fim_indefinido)
+  }
+  
 }, [args.initialValues])
 
 // redux
@@ -67,18 +68,15 @@ const openNotification = () => {
 };
 
 const corrigeDatas = (values: any)=>{
-  console.log(values.periodo, ' hloigoçigçogoççg')
   if(values.periodo != undefined){
     if(values.periodo.length == 2){
       // duas datas
       const new_periodo = values.periodo.map((M)=>{return M.format('YYYY-MM-DD')})
-      console.log('periodo dupla data refatorado: ', new_periodo)
       return {...values, periodo: new_periodo}
     }else{
       // tem apenas 1 data
       const M = values.periodo
       const new_periodo_ = M.format('YYYY-MM-DD') //values.periodo.toString()
-      console.log('AQQQQQQQQQQQQQQQQQQQQ', new_periodo_)
       return {...values, periodo: new_periodo_}
     }
   }else{
@@ -87,18 +85,14 @@ const corrigeDatas = (values: any)=>{
 }
 
 const onFinish = (values: any) => {
-  console.log('Received values of form: ', values, values.periodo);
   var values_corrected = corrigeDatas(values)
   //console.log('processo: ', values.processo)
   dispatch(setProcesso(values.processo));
   if(args.editMode){
-    console.log('aqui editando: ', fornecedoresReduxVar, values);
     const index = fornecedoresReduxVar.findIndex(fornecedor => fornecedor.processo === args.initialValues.processo);
-    console.log('index: ', index)
     if(index!=-1){
     var newfornecedores = [...fornecedoresReduxVar];
     newfornecedores[index] = values_corrected;
-    console.log('newfornecedores: ', newfornecedores)
     dispatch(editFornecedor([...newfornecedores]));
     args.submitFunctionModal()
     }

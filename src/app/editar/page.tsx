@@ -61,9 +61,6 @@ export default function Editar() {
     }
 
     const dateRefatora = (arg: any)=>{
-      //console.log("dados refatora: ", moment(arg.periodo), 'arg.periodo', arg.periodo) 
-      //console.log("dados refatora datepicker: ", DateTime.fromISO(arg.periodo), 'jsdate', DateTime.fromISO(arg.periodo).toJSDate()) 
-      //console.log('iso: ', DateTime.fromISO('2024-05-25'))
       
       if(arg.periodo != undefined){
         if(arg.periodo.length != 2){
@@ -84,18 +81,15 @@ export default function Editar() {
     }
 
     const handleClickEdit = (arg: any)=>{
-      console.log('printa edit: ', arg)
       const dadosEditar_refatorados = dateRefatora(arg)
       setDadosEditar(dadosEditar_refatorados)
       setEdit(true)
     }
 
     const handleChildrenClick = (args: any)=>{
-      console.log('dados do children: ', args)
       setEdit(false)
     }
 
-    console.log('fornecedores fetched: ', fornecedores)
     return (
       <div>
         <h1 style={{ textAlign: 'center' }}>Visualizar, editar ou excluir fornecedores salvos</h1>
